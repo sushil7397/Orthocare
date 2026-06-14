@@ -231,6 +231,53 @@
   .footer-logo img{height:36px;border-radius:6px}
   .footer-logo span{color:#fff;font-size:18px;font-weight:700}
 
+  /* ---- How It Works ---- */
+  .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+  .step{text-align:center;padding:0 20px;position:relative}
+  .step-num{width:60px;height:60px;border-radius:50%;background:var(--gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;margin:0 auto 16px;position:relative;z-index:2;box-shadow:0 6px 20px rgba(31,122,140,.3)}
+  .step-line{position:absolute;top:30px;left:calc(50% + 30px);right:calc(-50% + 30px);height:3px;background:var(--line);z-index:1}
+  .step:last-child .step-line{display:none}
+  .step h4{font-size:16px;margin-bottom:6px}
+  .step p{font-size:13px;color:var(--muted)}
+
+  /* ---- Doctor Profile ---- */
+  .doctor-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:center}
+  .doctor-photo{background:var(--gradient);border-radius:24px;height:420px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .doctor-photo img{height:300px;border-radius:16px;position:relative;z-index:1;filter:drop-shadow(0 10px 30px rgba(0,0,0,.2))}
+  .doctor-photo::after{content:'';position:absolute;width:300px;height:300px;background:rgba(255,255,255,.06);border-radius:50%;bottom:-80px;left:-80px}
+  .doctor-info h2{font-size:32px;font-weight:800;margin-bottom:6px}
+  .doctor-info .doc-spec{color:var(--brand);font-size:15px;font-weight:600;margin-bottom:16px}
+  .doctor-info p{color:var(--muted);font-size:15px;margin-bottom:14px;line-height:1.7}
+  .doc-quals{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .doc-quals span{background:var(--brand-light);color:var(--brand2);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600}
+  .doc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+  .doc-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+  .doc-stat .ds-num{font-size:24px;font-weight:800;color:var(--brand2)}
+  .doc-stat .ds-label{font-size:12px;color:var(--muted)}
+
+  /* ---- FAQ ---- */
+  .faq-list{max-width:760px;margin:0 auto}
+  .faq-item{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;transition:box-shadow .3s}
+  .faq-item:hover{box-shadow:0 4px 15px rgba(0,0,0,.05)}
+  .faq-q{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:15px;font-weight:600;gap:12px;user-select:none}
+  .faq-q svg{width:20px;height:20px;transition:transform .3s;flex-shrink:0;color:var(--brand2)}
+  .faq-q.open svg{transform:rotate(180deg)}
+  .faq-a{padding:0 22px 18px;font-size:14px;color:var(--muted);line-height:1.7;display:none}
+  .faq-a.open{display:block;animation:fadeIn .3s}
+
+  /* ---- Scroll to top ---- */
+  .scroll-top{position:fixed;bottom:30px;right:30px;width:48px;height:48px;border-radius:50%;background:var(--gradient);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:90;opacity:0;transform:translateY(20px);transition:all .3s;pointer-events:none}
+  .scroll-top.show{opacity:1;transform:translateY(0);pointer-events:auto}
+  .scroll-top:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+  .scroll-top svg{width:22px;height:22px}
+
+  /* ---- Preloader ---- */
+  .preloader{position:fixed;inset:0;background:var(--gradient);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .5s,visibility .5s}
+  .preloader.done{opacity:0;visibility:hidden;pointer-events:none}
+  .preloader img{height:80px;border-radius:16px;animation:preloaderPulse 1.5s ease-in-out infinite}
+  .preloader span{color:rgba(255,255,255,.8);font-size:14px;letter-spacing:1px}
+  @keyframes preloaderPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.7}}
+
   /* ---- Animations ---- */
   .animate{opacity:0;transform:translateY(30px);transition:all .65s ease}
   .animate.visible{opacity:1;transform:translateY(0)}
@@ -253,6 +300,10 @@
     .nav-links.open{display:flex}
     .hamburger{display:block}
     .section{padding:60px 16px}
+    .steps-grid{grid-template-columns:repeat(2,1fr);gap:24px}
+    .step-line{display:none}
+    .doctor-grid{grid-template-columns:1fr}
+    .doctor-photo{height:300px}
   }
 </style>
 </head>
@@ -320,7 +371,9 @@ function Navbar() {
         <a href="#home" onClick={()=>setOpen(false)}>Home</a>
         <a href="#about" onClick={()=>setOpen(false)}>About</a>
         <a href="#services" onClick={()=>setOpen(false)}>Services</a>
+        <a href="#doctor" onClick={()=>setOpen(false)}>Doctor</a>
         <a href="#blogs" onClick={()=>setOpen(false)}>Health Tips</a>
+        <a href="#faq" onClick={()=>setOpen(false)}>FAQ</a>
         <a href="#contact" onClick={()=>setOpen(false)}>Contact</a>
         <a href="#book" className="nav-cta" onClick={()=>setOpen(false)}>Book Appointment</a>
       </div>
@@ -365,16 +418,151 @@ function Hero() {
   );
 }
 
+// =========== ANIMATED COUNTER ===========
+function Counter({ end, suffix="", duration=2000 }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef();
+  const vis = useOnScreen(ref);
+  const started = useRef(false);
+  useEffect(() => {
+    if (!vis || started.current) return;
+    started.current = true;
+    const num = parseInt(end.toString().replace(/[^0-9]/g,"")) || 0;
+    const step = Math.ceil(num / (duration / 16));
+    let cur = 0;
+    const timer = setInterval(() => {
+      cur += step;
+      if (cur >= num) { cur = num; clearInterval(timer); }
+      setCount(cur);
+    }, 16);
+    return () => clearInterval(timer);
+  }, [vis]);
+  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
+}
+
 // =========== STATS ===========
 function Stats() {
   return (
     <div className="stats">
       <div className="stats-inner">
-        {[["15+","Years Experience"],["10,000+","Patients Treated"],["98%","Satisfaction Rate"],["24/7","Online Booking"]].map(([n,l],i)=>(
-          <Anim key={i} delay={i*100}><div className="stat-num">{n}</div><div className="stat-label">{l}</div></Anim>
-        ))}
+        <Anim delay={0}><div className="stat-num"><Counter end={15} suffix="+"/></div><div className="stat-label">Years Experience</div></Anim>
+        <Anim delay={100}><div className="stat-num"><Counter end={10000} suffix="+"/></div><div className="stat-label">Patients Treated</div></Anim>
+        <Anim delay={200}><div className="stat-num"><Counter end={98} suffix="%"/></div><div className="stat-label">Satisfaction Rate</div></Anim>
+        <Anim delay={300}><div className="stat-num">24/7</div><div className="stat-label">Online Booking</div></Anim>
       </div>
     </div>
+  );
+}
+
+// =========== HOW IT WORKS ===========
+function HowItWorks() {
+  const steps = [
+    {num:"1",title:"Describe Symptoms",desc:"Tell us what's bothering you using our quick symptom form."},
+    {num:"2",title:"Pick a Time",desc:"Choose your preferred date, time, and visit type."},
+    {num:"3",title:"Get Confirmed",desc:"Receive email confirmation with calendar invite."},
+    {num:"4",title:"Visit & Recover",desc:"See the doctor and follow your personalized plan."},
+  ];
+  return (
+    <section className="section" id="how" style={{background:"#fff"}}>
+      <div className="section-inner">
+        <div className="section-title"><h2>How It Works</h2><p>Book your appointment in 4 simple steps.</p><div className="accent-line"></div></div>
+        <div className="steps-grid">
+          {steps.map((s,i)=>(
+            <Anim key={i} delay={i*120}>
+              <div className="step">
+                <div className="step-num">{s.num}</div>
+                {i<3 && <div className="step-line"></div>}
+                <h4>{s.title}</h4>
+                <p>{s.desc}</p>
+              </div>
+            </Anim>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== MEET THE DOCTOR ===========
+function DoctorProfile() {
+  return (
+    <section className="section" id="doctor">
+      <div className="section-inner">
+        <div className="section-title"><h2>Meet Your Doctor</h2><p>Expert care from a specialist you can trust.</p><div className="accent-line"></div></div>
+        <div className="doctor-grid">
+          <Anim>
+            <div className="doctor-photo">
+              <img src="assets/logo.png" alt="Dr. Aisha Rao"/>
+            </div>
+          </Anim>
+          <Anim delay={150}>
+            <div className="doctor-info">
+              <h2>Dr. Aisha Rao</h2>
+              <div className="doc-spec">Orthopedic Surgery (Sports & Joint)</div>
+              <p>Dr. Rao brings over 20 years of experience in arthroscopic knee and shoulder surgery. She specializes in sports medicine, joint replacement, and minimally invasive procedures that get patients back to their active lives faster.</p>
+              <p>A firm believer in preventive care, Dr. Rao developed OrthoCare's injury prevention content library to help patients avoid injuries before they happen.</p>
+              <div className="doc-quals">
+                <span>MBBS</span><span>MS Ortho</span><span>Fellowship (Sports Medicine)</span><span>20+ Years</span>
+              </div>
+              <div className="doc-stats">
+                <div className="doc-stat"><div className="ds-num"><Counter end={5000} suffix="+"/></div><div className="ds-label">Surgeries</div></div>
+                <div className="doc-stat"><div className="ds-num"><Counter end={15} suffix="+"/></div><div className="ds-label">Awards</div></div>
+                <div className="doc-stat"><div className="ds-num"><Counter end={99} suffix="%"/></div><div className="ds-label">Success Rate</div></div>
+              </div>
+            </div>
+          </Anim>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== FAQ ===========
+function FAQ() {
+  const [openIdx, setOpenIdx] = useState(null);
+  const items = [
+    {q:"How do I schedule an appointment?",a:"Simply scroll to our booking section, fill in your details — name, email, preferred date and time, visit type, and reason for visit — then click 'Request Appointment'. You'll receive an email confirmation and a Google Calendar link."},
+    {q:"Do you offer telehealth consultations?",a:"Yes! When booking, select 'Telehealth (Video)' as your visit type. You'll receive a secure video call link in your confirmation email. Telehealth is ideal for follow-ups, second opinions, and initial consultations."},
+    {q:"What should I bring to my first appointment?",a:"Please bring a valid photo ID, your insurance card, a list of current medications, any relevant imaging (X-rays, MRI reports), and details about your medical history. If you've filled out our symptom form online, we'll already have that information."},
+    {q:"How long does a typical consultation last?",a:"Initial consultations are typically 30-45 minutes. Follow-up visits are usually 15-20 minutes. Dr. Rao believes in taking the time needed to fully understand your condition and discuss all treatment options."},
+    {q:"Do you accept insurance?",a:"We accept most major insurance plans. Please contact our office at +1 (555) 123-4567 to verify your specific plan before your visit. We also offer self-pay options with transparent pricing."},
+    {q:"What is the cancellation policy?",a:"We request at least 24 hours notice for cancellations. Late cancellations or no-shows may incur a fee. We understand emergencies happen — please call us and we'll do our best to accommodate."},
+    {q:"How long is recovery after orthopedic surgery?",a:"Recovery times vary by procedure. Minor arthroscopic procedures may need 2-4 weeks, while joint replacements typically require 6-12 weeks. ACL reconstruction recovery takes 9-12 months for full return to sports. Dr. Rao will provide a detailed recovery timeline specific to your case."},
+  ];
+  return (
+    <section className="section" id="faq">
+      <div className="section-inner">
+        <div className="section-title"><h2>Frequently Asked Questions</h2><p>Answers to common questions about our practice and services.</p><div className="accent-line"></div></div>
+        <div className="faq-list">
+          {items.map((item,i)=>(
+            <Anim key={i} delay={i*60}>
+              <div className="faq-item">
+                <div className={`faq-q ${openIdx===i?"open":""}`} onClick={()=>setOpenIdx(openIdx===i?null:i)}>
+                  {item.q}
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div className={`faq-a ${openIdx===i?"open":""}`}>{item.a}</div>
+              </div>
+            </Anim>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== SCROLL TO TOP ===========
+function ScrollTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const h = () => setShow(window.scrollY > 400);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  return (
+    <button className={`scroll-top ${show?"show":""}`} onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}>
+      <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
   );
 }
 
@@ -795,26 +983,43 @@ function Footer() {
   );
 }
 
+// =========== PRELOADER ===========
+function Preloader() {
+  const [done, setDone] = useState(false);
+  useEffect(() => { setTimeout(() => setDone(true), 1800); }, []);
+  return (
+    <div className={`preloader ${done?"done":""}`}>
+      <img src="assets/logo.png" alt="OrthoCare"/>
+      <span>Loading OrthoCare...</span>
+    </div>
+  );
+}
+
 // =========== APP ===========
 function App() {
   const [articleId, setArticleId] = useState(null);
 
   if (articleId) {
-    return <ArticlePage articleId={articleId} onNavigate={(id)=>setArticleId(id)} onBack={()=>{setArticleId(null); setTimeout(()=>{const el=document.getElementById("blogs");if(el)el.scrollIntoView({behavior:"smooth"});},100);}} />;
+    return (<><ArticlePage articleId={articleId} onNavigate={(id)=>setArticleId(id)} onBack={()=>{setArticleId(null); setTimeout(()=>{const el=document.getElementById("blogs");if(el)el.scrollIntoView({behavior:"smooth"});},100);}} /><ScrollTop/></>);
   }
 
   return (
     <>
+      <Preloader/>
       <Navbar/>
       <Hero/>
       <Stats/>
+      <HowItWorks/>
       <Services/>
       <About/>
+      <DoctorProfile/>
       <BookingSection/>
       <Blogs onRead={(id)=>setArticleId(id)}/>
       <Testimonials/>
+      <FAQ/>
       <Contact/>
       <Footer/>
+      <ScrollTop/>
     </>
   );
 }
