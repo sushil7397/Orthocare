@@ -17,4 +17,3 @@ venv/
 .mypy_cache/
 .idea/
 .vscode/
-.claude/

@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(py --version)",
+      "Bash(where python:*)",
+      "Bash(where python3:*)",
+      "Bash(where py:*)",
+      "Bash(\"C:/Users/Admin/AppData/Local/Microsoft/WindowsApps/python.exe\" --version)",
+      "Bash(\"C:/Users/Admin/AppData/Local/Programs/Python/Python311/python.exe\" --version)",
+      "Bash(/c/ProgramData/chocolatey/bin/python3.13.exe --version)",
+      "Bash(choco install:*)",
+      "Bash(ls /c/Python3*/python.exe)",
+      "Read(//c/Users/Admin/AppData/Local/Programs/Python/**)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npm start:*)",
+      "Bash(curl -s http://localhost:8000/api/health)",
+      "Bash(curl -s http://localhost:8000/api/doctors)",
+      "Bash(curl -s -X POST http://localhost:8000/api/auth/login -H \"Content-Type: application/x-www-form-urlencoded\" -d \"username=patient@orthocare.test&password=Passw0rd!\")",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(npx kill-port:*)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(curl -s -X POST http://localhost:8000/api/book -H \"Content-Type: application/json\" -d '{\"name\":\"Test Patient\",\"email\":\"test@example.com\",\"phone\":\"+1234567890\",\"date\":\"2026-06-16\",\"time\":\"10:00\",\"visitType\":\"in_clinic\",\"reason\":\"Knee Pain\",\"symptoms\":\"Swelling after running\"}')"
+    ]
+  }
+}
