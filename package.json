@@ -4,8 +4,11 @@
   "description": "OrthoCare - Orthopedic appointment booking & injury-prevention hub",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "node server/seed.js && node server/index.js",
     "seed": "node server/seed.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
