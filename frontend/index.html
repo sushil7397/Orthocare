@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<title>OrthoCare — Expert Orthopedic Care & Injury Prevention</title>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+  :root{
+    --bg:#f4f7fb;--card:#fff;--ink:#13233a;--muted:#5e7088;
+    --brand:#1f7a8c;--brand2:#15616d;--brand-light:#e8f4f6;
+    --ok:#1b873f;--warn:#b45309;--danger:#b91c1c;--line:#e3e9f1;
+    --gradient:linear-gradient(135deg,#0d3b4f 0%,#15616d 40%,#1f7a8c 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+
+  /* ---- Navbar ---- */
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;transition:all .35s ease}
+  .navbar.transparent{background:transparent}
+  .navbar.solid{background:rgba(13,59,79,.97);backdrop-filter:blur(12px);box-shadow:0 2px 24px rgba(0,0,0,.18)}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+  .nav-logo img{height:42px;border-radius:8px}
+  .nav-logo span{font-size:20px;font-weight:700;letter-spacing:.5px}
+  .nav-links{display:flex;gap:6px;align-items:center}
+  .nav-links a{color:rgba(255,255,255,.85);text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;transition:all .2s}
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.12)}
+  .nav-cta{background:rgba(255,255,255,.15)!important;border:1px solid rgba(255,255,255,.3)!important;padding:8px 22px!important;border-radius:999px!important;font-weight:600!important}
+  .nav-cta:hover{background:#fff!important;color:var(--brand2)!important}
+  .hamburger{display:none;background:none;border:none;color:#fff;font-size:26px;cursor:pointer}
+
+  /* ---- Hero ---- */
+  .hero{background:var(--gradient);min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;right:-15%;width:900px;height:900px;background:radial-gradient(circle,rgba(125,211,192,.15) 0%,transparent 70%);border-radius:50%;animation:pulse 8s ease-in-out infinite}
+  .hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(31,122,140,.2) 0%,transparent 70%);border-radius:50%;animation:pulse 10s ease-in-out infinite 2s}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.1);opacity:1}}
+  .hero-inner{max-width:1200px;margin:0 auto;padding:120px 40px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+  .hero-text h1{font-size:50px;line-height:1.12;color:#fff;margin-bottom:20px;font-weight:800}
+  .hero-text h1 em{font-style:normal;color:#7dd3c0}
+  .hero-text p{font-size:18px;color:rgba(255,255,255,.78);margin-bottom:32px;max-width:500px}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+  .btn-primary{background:#fff;color:var(--brand2);border:none;padding:14px 34px;border-radius:999px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.12);text-decoration:none;display:inline-block}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  .btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.35);padding:12px 30px;border-radius:999px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+  .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+  .hero-visual{display:flex;justify-content:center;align-items:center}
+  .hero-card-stack{position:relative;width:380px;height:420px}
+  .float-card{position:absolute;background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.12);transition:transform .5s ease,box-shadow .3s}
+  .float-card:hover{box-shadow:0 25px 60px rgba(0,0,0,.18)!important}
+  .fc1{top:0;left:0;width:280px;animation:floatA 6s ease-in-out infinite}
+  .fc2{top:100px;right:0;width:260px;animation:floatB 7s ease-in-out infinite}
+  .fc3{bottom:0;left:30px;width:300px;animation:floatC 8s ease-in-out infinite}
+  @keyframes floatA{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(-3deg) translateY(-12px)}}
+  @keyframes floatB{0%,100%{transform:rotate(2deg) translateY(0)}50%{transform:rotate(2deg) translateY(-14px)}}
+  @keyframes floatC{0%,100%{transform:rotate(-1deg) translateY(0)}50%{transform:rotate(-1deg) translateY(-10px)}}
+  .fc-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+  .fc-icon svg{width:24px;height:24px}
+  .float-card h4{font-size:15px;margin-bottom:4px}
+  .float-card p{font-size:13px;color:var(--muted);margin:0}
+  .fc-blue{background:#e0f2fe}
+  .fc-green{background:#dcfce7}
+  .fc-amber{background:#fef3c7}
+
+  /* ---- Stats ---- */
+  .stats{background:#fff;padding:48px 0;border-bottom:1px solid var(--line)}
+  .stats-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center}
+  .stat-num{font-size:38px;font-weight:800;color:var(--brand2)}
+  .stat-label{font-size:14px;color:var(--muted);margin-top:4px}
+
+  /* ---- Sections ---- */
+  .section{padding:90px 40px}
+  .section-inner{max-width:1200px;margin:0 auto}
+  .section-title{text-align:center;margin-bottom:50px}
+  .section-title h2{font-size:36px;font-weight:800;margin-bottom:10px}
+  .section-title p{font-size:16px;color:var(--muted);max-width:600px;margin:0 auto}
+  .accent-line{width:60px;height:4px;background:var(--gradient);border-radius:4px;margin:16px auto 0}
+
+  /* ---- Services ---- */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .service-card{background:#fff;border-radius:18px;padding:30px;border:1px solid var(--line);transition:all .35s;cursor:default}
+  .service-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.08);border-color:var(--brand)}
+  .service-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .service-icon svg{width:28px;height:28px}
+  .service-card h3{font-size:18px;margin-bottom:8px}
+  .service-card p{font-size:14px;color:var(--muted)}
+
+  /* ---- About ---- */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .about-img{background:var(--gradient);border-radius:24px;height:420px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .about-img img{height:200px;border-radius:16px;position:relative;z-index:1;filter:drop-shadow(0 10px 30px rgba(0,0,0,.2))}
+  .about-img::after{content:'';position:absolute;width:350px;height:350px;background:rgba(255,255,255,.06);border-radius:50%;top:-60px;right:-60px}
+  .about-text h2{font-size:34px;font-weight:800;margin-bottom:16px}
+  .about-text p{color:var(--muted);margin-bottom:16px;font-size:15px}
+  .about-list{list-style:none;padding:0}
+  .about-list li{padding:10px 0;font-size:15px;display:flex;align-items:center;gap:12px}
+  .check-icon{width:24px;height:24px;background:var(--brand-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .check-icon svg{width:14px;height:14px}
+
+  /* ---- Booking ---- */
+  .booking-section{background:var(--gradient);position:relative;overflow:hidden}
+  .booking-section::before{content:'';position:absolute;width:500px;height:500px;background:rgba(125,211,192,.08);border-radius:50%;top:-150px;right:-100px}
+  .booking-inner{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center}
+  .booking-left h2{font-size:34px;color:#fff;font-weight:800;margin-bottom:16px}
+  .booking-left p{color:rgba(255,255,255,.75);font-size:15px;margin-bottom:24px}
+  .bf{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+  .bf-icon{width:42px;height:42px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .bf-icon svg{width:20px;height:20px}
+  .bf h4{color:#fff;font-size:14px;margin-bottom:2px}
+  .bf p{color:rgba(255,255,255,.6);font-size:13px;margin:0}
+  .booking-form{background:#fff;border-radius:20px;padding:36px;box-shadow:0 25px 60px rgba(0,0,0,.2)}
+  .booking-form h3{font-size:22px;margin-bottom:4px}
+  .booking-form .sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-group{margin-bottom:14px}
+  .form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;transition:border .2s,box-shadow .2s;background:#fff}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(31,122,140,.12)}
+  .book-btn{width:100%;padding:14px;background:var(--gradient);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s;margin-top:4px}
+  .book-btn:hover{opacity:.92;transform:translateY(-1px)}
+  .book-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+  /* Success modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s}
+  .modal{background:#fff;border-radius:20px;padding:40px;max-width:480px;width:100%;text-align:center;animation:slideUp .4s ease}
+  .modal .success-icon{width:70px;height:70px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+  .modal .success-icon svg{width:36px;height:36px;color:var(--ok)}
+  .modal h2{font-size:24px;margin-bottom:8px}
+  .modal p{color:var(--muted);font-size:14px;margin-bottom:8px}
+  .modal .booking-id{background:var(--brand-light);display:inline-block;padding:6px 18px;border-radius:8px;font-weight:700;color:var(--brand2);font-size:15px;margin:10px 0}
+  .modal .cal-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gradient);color:#fff;padding:12px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;margin-top:16px;transition:opacity .2s}
+  .modal .cal-btn:hover{opacity:.9}
+  .modal .close-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;margin-top:14px;padding:8px 16px}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- Blogs ---- */
+  .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .blog-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--line);transition:all .35s}
+  .blog-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
+  .blog-thumb{height:180px;display:flex;align-items:center;justify-content:center;position:relative}
+  .blog-thumb svg{width:56px;height:56px;opacity:.7}
+  .blog-body{padding:22px}
+  .blog-cat{font-size:11px;text-transform:uppercase;font-weight:700;color:var(--brand);letter-spacing:1px;margin-bottom:8px}
+  .blog-body h3{font-size:17px;margin-bottom:8px;line-height:1.4}
+  .blog-body p{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .blog-link{color:var(--brand2);font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:gap .2s}
+  .blog-link:hover{gap:8px}
+
+  /* ---- Testimonials ---- */
+  .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .test-card{background:#fff;border-radius:18px;padding:28px;border:1px solid var(--line);transition:all .3s}
+  .test-card:hover{box-shadow:0 10px 30px rgba(0,0,0,.06)}
+  .stars{color:#f59e0b;margin-bottom:12px;display:flex;gap:2px}
+  .stars svg{width:18px;height:18px}
+  .test-card blockquote{font-size:14px;color:#555;line-height:1.7;margin:0 0 18px;font-style:italic}
+  .test-author{display:flex;align-items:center;gap:12px}
+  .test-avatar{width:42px;height:42px;border-radius:50%;background:var(--brand-light);display:flex;align-items:center;justify-content:center;color:var(--brand2);font-weight:700;font-size:16px}
+  .test-name{font-size:14px;font-weight:600}
+  .test-role{font-size:12px;color:var(--muted)}
+
+  /* ---- Article Page ---- */
+  .article-page{padding-top:88px;min-height:100vh}
+  .article-back{display:inline-flex;align-items:center;gap:6px;color:var(--brand2);font-size:14px;font-weight:600;text-decoration:none;margin-bottom:24px;padding:8px 16px;border-radius:8px;transition:background .2s;cursor:pointer;border:none;background:none}
+  .article-back:hover{background:var(--brand-light)}
+  .article-back svg{width:18px;height:18px}
+  .article-hero{border-radius:20px;height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:32px;position:relative;overflow:hidden}
+  .article-hero svg{width:80px;height:80px;opacity:.6}
+  .article-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  .article-meta .pill{font-size:12px;padding:4px 14px;border-radius:999px;font-weight:600}
+  .pill-cat{background:var(--brand-light);color:var(--brand2)}
+  .pill-region{background:#fef3c7;color:var(--warn)}
+  .pill-type{background:#ede9fe;color:#7c3aed}
+  .article-title{font-size:34px;font-weight:800;line-height:1.25;margin-bottom:16px}
+  .article-summary{font-size:17px;color:var(--muted);line-height:1.7;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+  .article-body{max-width:760px}
+  .article-body h2{font-size:22px;font-weight:700;margin:32px 0 12px;color:var(--ink);padding-top:8px}
+  .article-body h3{font-size:18px;font-weight:600;margin:24px 0 8px;color:var(--brand2)}
+  .article-body p{font-size:15px;line-height:1.8;color:#3a4a5c;margin-bottom:14px}
+  .article-body ul,.article-body ol{margin:0 0 16px 24px;color:#3a4a5c}
+  .article-body li{font-size:15px;line-height:1.8;margin-bottom:6px}
+  .article-body strong{color:var(--ink)}
+  .article-sidebar{position:sticky;top:90px}
+  .article-layout{display:grid;grid-template-columns:1fr 300px;gap:50px;max-width:1200px;margin:0 auto;padding:0 40px 80px}
+  .sidebar-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:16px}
+  .sidebar-card h4{font-size:15px;font-weight:700;margin-bottom:12px}
+  .sidebar-link{display:block;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink);text-decoration:none;cursor:pointer;transition:color .2s}
+  .sidebar-link:last-child{border-bottom:none}
+  .sidebar-link:hover{color:var(--brand2)}
+  .cta-card{background:var(--gradient);border-radius:16px;padding:28px;color:#fff;text-align:center}
+  .cta-card h4{color:#fff;font-size:17px;margin-bottom:8px}
+  .cta-card p{color:rgba(255,255,255,.75);font-size:13px;margin-bottom:16px}
+  .cta-card a{display:inline-block;background:#fff;color:var(--brand2);padding:10px 24px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;transition:transform .2s}
+  .cta-card a:hover{transform:translateY(-2px)}
+  @media(max-width:900px){
+    .article-layout{grid-template-columns:1fr;padding:0 16px 60px}
+    .article-title{font-size:26px}
+  }
+
+  /* ---- Contact ---- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .contact-info{display:flex;flex-direction:column;gap:22px}
+  .contact-item{display:flex;gap:16px;align-items:flex-start}
+  .c-icon{width:50px;height:50px;border-radius:14px;background:var(--brand-light);color:var(--brand2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .c-icon svg{width:22px;height:22px}
+  .contact-item h4{font-size:15px;margin-bottom:3px}
+  .contact-item p{font-size:14px;color:var(--muted);margin:0}
+  .contact-form{background:#fff;border-radius:18px;padding:32px;border:1px solid var(--line);box-shadow:0 4px 15px rgba(0,0,0,.04)}
+  .contact-form label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-top:16px}
+  .contact-form label:first-child{margin-top:0}
+  .contact-form input,.contact-form textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;margin-top:6px;font-family:inherit;transition:border .2s}
+  .contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--brand)}
+  .contact-submit{margin-top:20px;width:100%;background:var(--gradient);color:#fff;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s}
+  .contact-submit:hover{opacity:.9}
+
+  /* ---- Footer ---- */
+  .footer{background:#0d2833;color:rgba(255,255,255,.7);padding:50px 40px 30px}
+  .footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .footer h4{color:#fff;margin-bottom:14px;font-size:15px}
+  .footer p{font-size:13px;line-height:1.8}
+  .footer a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;display:block;padding:3px 0;transition:color .2s}
+  .footer a:hover{color:#7dd3c0}
+  .footer-bottom{max-width:1200px;margin:30px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);text-align:center;font-size:12px;color:rgba(255,255,255,.4)}
+  .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .footer-logo img{height:36px;border-radius:6px}
+  .footer-logo span{color:#fff;font-size:18px;font-weight:700}
+
+  /* ---- Animations ---- */
+  .animate{opacity:0;transform:translateY(30px);transition:all .65s ease}
+  .animate.visible{opacity:1;transform:translateY(0)}
+
+  /* ---- Responsive ---- */
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;text-align:center;padding:120px 20px 60px}
+    .hero-text p{margin:0 auto 32px}
+    .hero-actions{justify-content:center}
+    .hero-visual{display:none}
+    .services-grid,.blog-grid,.testimonials-grid{grid-template-columns:1fr}
+    .about-grid,.contact-grid{grid-template-columns:1fr}
+    .booking-inner{grid-template-columns:1fr}
+    .booking-left{text-align:center}
+    .stats-inner{grid-template-columns:repeat(2,1fr)}
+    .footer-inner{grid-template-columns:1fr 1fr}
+    .form-row{grid-template-columns:1fr}
+    .navbar{padding:0 16px}
+    .nav-links{display:none;position:absolute;top:68px;left:0;right:0;background:rgba(13,59,79,.97);flex-direction:column;padding:16px}
+    .nav-links.open{display:flex}
+    .hamburger{display:block}
+    .section{padding:60px 16px}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const API = "";
+
+// ---- SVG Icon Components ----
+const I = {
+  calendar: (c="#0369a1") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>,
+  hospital: (c="#16a34a") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M3 21h18M9 8h6M12 5v6"/><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 21v-4h6v4"/></svg>,
+  muscle: (c="#d97706") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M7 11c0-2.5 1-5 4-5s3 2 3 2 0-2 3-2 4 2.5 4 5-1.5 5.5-5 8c-1.5 1-2 1-2 1"/><path d="M3 11c0 2.5 1.5 5.5 5 8 1.5 1 2 1 2 1"/><circle cx="9" cy="8" r="1" fill={c}/></svg>,
+  bone: (c="#0369a1") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M5 8a3 3 0 0 1 3-3 3 3 0 0 1 2.1.9L17 12.6a3 3 0 0 1 .9 2.1 3 3 0 0 1-3 3 3 3 0 0 1-2.1-.9L6 10.1A3 3 0 0 1 5 8z"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/></svg>,
+  ball: (c="#16a34a") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20M4.5 5.5C7 8 10 9 12 9s5-1 7.5-3.5M4.5 18.5C7 16 10 15 12 15s5 1 7.5 3.5"/></svg>,
+  spine: (c="#d97706") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M8 4h8M7 8h10M8 12h8M7 16h10M8 20h8"/></svg>,
+  cast: (c="#0369a1") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"/><rect x="4" y="4" width="16" height="8" rx="2"/><path d="M4 12c0 5 3 10 8 10s8-5 8-10"/><path d="M9 8h6"/></svg>,
+  therapy: (c="#16a34a") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M12 7v5M8 14l4-2 4 2"/><path d="M8 14v4l4 4 4-4v-4"/></svg>,
+  video: (c="#d97706") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="5" width="14" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>,
+  mail: (c="#fff") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>,
+  calendarPlus: (c="#fff") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4"/></svg>,
+  clock: (c="#fff") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>,
+  check: (c) => <svg fill="none" stroke={c||"var(--brand2)"} strokeWidth="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>,
+  star: () => <svg viewBox="0 0 24 24" fill="#f59e0b"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>,
+  pin: (c="var(--brand2)") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+  phone: (c="var(--brand2)") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.09 5.18 2 2 0 0 1 5.07 3h3a2 2 0 0 1 2 1.72c.12.81.36 1.6.68 2.34a2 2 0 0 1-.45 2.11L8.09 11.4a16 16 0 0 0 6.51 6.51l2.23-2.23a2 2 0 0 1 2.11-.45c.74.32 1.53.56 2.34.68a2 2 0 0 1 1.72 2z"/></svg>,
+  mailBox: (c="var(--brand2)") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>,
+  globe: (c="var(--brand2)") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>,
+  arrow: () => <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" style={{width:14,height:14}}><path d="M5 12h14M12 5l7 7-7 7"/></svg>,
+  run: (c="#0369a1") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-7 2.5 2L16 9l-2-2-3 3-2-2-4 5"/></svg>,
+  heart: (c="#e11d48") => <svg fill={c} stroke="none" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+  shield: (c="#0369a1") => <svg fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>,
+};
+
+// ---- Scroll animation hook ----
+function useOnScreen(ref) {
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if(e.isIntersecting) setVis(true); }, { threshold: 0.12 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return vis;
+}
+function Anim({ children, className="", style={}, delay=0 }) {
+  const ref = useRef();
+  const vis = useOnScreen(ref);
+  return <div ref={ref} className={`animate ${vis?"visible":""} ${className}`} style={{...style, transitionDelay:delay+"ms"}}>{children}</div>;
+}
+
+// =========== NAVBAR ===========
+function Navbar() {
+  const [solid, setSolid] = useState(false);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const h = () => setSolid(window.scrollY > 50);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  return (
+    <nav className={`navbar ${solid?"solid":"transparent"}`}>
+      <a href="#" className="nav-logo"><img src="assets/logo.png" alt="OrthoCare"/><span>OrthoCare</span></a>
+      <button className="hamburger" onClick={()=>setOpen(!open)}>&#9776;</button>
+      <div className={`nav-links ${open?"open":""}`}>
+        <a href="#home" onClick={()=>setOpen(false)}>Home</a>
+        <a href="#about" onClick={()=>setOpen(false)}>About</a>
+        <a href="#services" onClick={()=>setOpen(false)}>Services</a>
+        <a href="#blogs" onClick={()=>setOpen(false)}>Health Tips</a>
+        <a href="#contact" onClick={()=>setOpen(false)}>Contact</a>
+        <a href="#book" className="nav-cta" onClick={()=>setOpen(false)}>Book Appointment</a>
+      </div>
+    </nav>
+  );
+}
+
+// =========== HERO ===========
+function Hero() {
+  return (
+    <section className="hero" id="home">
+      <div className="hero-inner">
+        <div className="hero-text">
+          <h1>Expert <em>Orthopedic</em> Care You Can Trust</h1>
+          <p>Advanced diagnostics, personalized treatment plans, and a proactive injury-prevention hub. Schedule your visit in seconds.</p>
+          <div className="hero-actions">
+            <a href="#book" className="btn-primary">Book Appointment</a>
+            <a href="#services" className="btn-outline">Our Services</a>
+          </div>
+        </div>
+        <div className="hero-visual">
+          <div className="hero-card-stack">
+            <div className="float-card fc1">
+              <div className="fc-icon fc-blue">{I.calendar()}</div>
+              <h4>Easy Scheduling</h4>
+              <p>Pick your date and time — we'll handle the rest.</p>
+            </div>
+            <div className="float-card fc2">
+              <div className="fc-icon fc-green">{I.hospital()}</div>
+              <h4>In-Clinic & Telehealth</h4>
+              <p>Visit in person or consult from home via video.</p>
+            </div>
+            <div className="float-card fc3">
+              <div className="fc-icon fc-amber">{I.muscle()}</div>
+              <h4>Recovery Guidance</h4>
+              <p>Post-op exercises and milestone check-ins.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== STATS ===========
+function Stats() {
+  return (
+    <div className="stats">
+      <div className="stats-inner">
+        {[["15+","Years Experience"],["10,000+","Patients Treated"],["98%","Satisfaction Rate"],["24/7","Online Booking"]].map(([n,l],i)=>(
+          <Anim key={i} delay={i*100}><div className="stat-num">{n}</div><div className="stat-label">{l}</div></Anim>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// =========== SERVICES ===========
+function Services() {
+  const items = [
+    {icon:I.bone(),color:"fc-blue",title:"Joint Replacement",desc:"Total and partial knee/hip replacement with minimally invasive techniques."},
+    {icon:I.ball(),color:"fc-green",title:"Sports Medicine",desc:"ACL reconstruction, rotator cuff repair, and return-to-sport programs."},
+    {icon:I.spine(),color:"fc-amber",title:"Spine Care",desc:"Evaluation and treatment for herniated discs, sciatica, and stenosis."},
+    {icon:I.cast(),color:"fc-blue",title:"Fracture Care",desc:"Emergency fracture management, casting, and surgical fixation."},
+    {icon:I.therapy(),color:"fc-green",title:"Physical Therapy",desc:"Customized rehab programs with progress tracking."},
+    {icon:I.video(),color:"fc-amber",title:"Telehealth Consults",desc:"Secure video consultations from the comfort of your home."},
+  ];
+  return (
+    <section className="section" id="services" style={{background:"#fff"}}>
+      <div className="section-inner">
+        <div className="section-title"><h2>Our Services</h2><p>Comprehensive orthopedic care from diagnosis through recovery.</p><div className="accent-line"></div></div>
+        <div className="services-grid">
+          {items.map((s,i)=>(
+            <Anim key={i} delay={i*80}>
+              <div className="service-card">
+                <div className={`service-icon ${s.color}`}>{s.icon}</div>
+                <h3>{s.title}</h3><p>{s.desc}</p>
+              </div>
+            </Anim>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== ABOUT ===========
+function About() {
+  const features = [
+    "Board-certified orthopedic surgeons with 15+ years experience",
+    "Appointment details sent directly to the doctor's calendar",
+    "Integrated symptom pre-screener for smarter triage",
+    "Guided post-surgery recovery content library",
+    "In-clinic and telehealth visit options",
+    "HIPAA-compliant and privacy-first approach",
+  ];
+  return (
+    <section className="section" id="about">
+      <div className="section-inner">
+        <div className="about-grid">
+          <Anim><div className="about-img"><img src="assets/logo.png" alt="OrthoCare"/></div></Anim>
+          <Anim delay={150}>
+            <div className="about-text">
+              <h2>Why Choose OrthoCare?</h2>
+              <p>We combine clinical excellence with modern technology to deliver orthopedic care that's accessible, transparent, and patient-centered.</p>
+              <p>From your first symptom to your last recovery milestone, we're with you every step.</p>
+              <ul className="about-list">
+                {features.map((f,i)=><li key={i}><span className="check-icon">{I.check()}</span>{f}</li>)}
+              </ul>
+            </div>
+          </Anim>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== BOOKING FORM ===========
+function BookingSection() {
+  const [form, setForm] = useState({ name:"", email:"", phone:"", date:"", time:"", visitType:"in_clinic", reason:"", symptoms:"" });
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    const tmr = new Date(Date.now()+86400000).toISOString().slice(0,10);
+    setForm(f=>({...f, date:tmr}));
+  },[]);
+
+  function up(k,v){ setForm(f=>({...f,[k]:v})); }
+
+  async function submit(e) {
+    e.preventDefault();
+    setErr(""); setLoading(true);
+    try {
+      const res = await fetch(API+"/api/book", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error || "Something went wrong");
+      setResult(data);
+      setForm({name:"",email:"",phone:"",date:new Date(Date.now()+86400000).toISOString().slice(0,10),time:"",visitType:"in_clinic",reason:"",symptoms:""});
+    } catch(e){ setErr(e.message); }
+    setLoading(false);
+  }
+
+  return (
+    <>
+    <section className="section booking-section" id="book">
+      <div className="section-inner">
+        <div className="booking-inner">
+          <Anim>
+            <div className="booking-left">
+              <h2>Schedule Your Appointment</h2>
+              <p>Fill out the form and we'll send the details directly to the doctor. You'll get a Google Calendar link to save the event.</p>
+              <div className="bf">
+                <div className="bf-icon">{I.mail()}</div>
+                <div><h4>Email Confirmation</h4><p>Appointment details sent to doctor instantly</p></div>
+              </div>
+              <div className="bf">
+                <div className="bf-icon">{I.calendarPlus()}</div>
+                <div><h4>Calendar Integration</h4><p>Add to Google Calendar with one click</p></div>
+              </div>
+              <div className="bf">
+                <div className="bf-icon">{I.clock()}</div>
+                <div><h4>Quick Response</h4><p>Doctor confirms within 24 hours</p></div>
+              </div>
+            </div>
+          </Anim>
+          <Anim delay={200}>
+            <form className="booking-form" onSubmit={submit}>
+              <h3>Book Now</h3>
+              <p className="sub">All fields marked * are required.</p>
+              <div className="form-row">
+                <div className="form-group"><label>Full Name *</label><input required value={form.name} onChange={e=>up("name",e.target.value)} placeholder="John Doe"/></div>
+                <div className="form-group"><label>Email Address *</label><input type="email" required value={form.email} onChange={e=>up("email",e.target.value)} placeholder="john@example.com"/></div>
+              </div>
+              <div className="form-row">
+                <div className="form-group"><label>Phone Number</label><input type="tel" value={form.phone} onChange={e=>up("phone",e.target.value)} placeholder="+1 (555) 000-0000"/></div>
+                <div className="form-group"><label>Visit Type</label>
+                  <select value={form.visitType} onChange={e=>up("visitType",e.target.value)}>
+                    <option value="in_clinic">In-Clinic Visit</option>
+                    <option value="telehealth">Telehealth (Video)</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group"><label>Preferred Date *</label><input type="date" required value={form.date} onChange={e=>up("date",e.target.value)}/></div>
+                <div className="form-group"><label>Preferred Time *</label>
+                  <select required value={form.time} onChange={e=>up("time",e.target.value)}>
+                    <option value="">Select a time...</option>
+                    <option value="09:00">9:00 AM</option><option value="09:30">9:30 AM</option>
+                    <option value="10:00">10:00 AM</option><option value="10:30">10:30 AM</option>
+                    <option value="11:00">11:00 AM</option><option value="11:30">11:30 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="14:00">2:00 PM</option><option value="14:30">2:30 PM</option>
+                    <option value="15:00">3:00 PM</option><option value="15:30">3:30 PM</option>
+                    <option value="16:00">4:00 PM</option><option value="16:30">4:30 PM</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group"><label>Reason for Visit</label>
+                <select value={form.reason} onChange={e=>up("reason",e.target.value)}>
+                  <option value="">Select a reason...</option>
+                  <option value="Knee Pain">Knee Pain</option>
+                  <option value="Back/Neck Pain">Back / Neck Pain</option>
+                  <option value="Sports Injury">Sports Injury</option>
+                  <option value="Fracture Follow-up">Fracture Follow-up</option>
+                  <option value="Post-Op Review">Post-Op Review</option>
+                  <option value="Acute Injury / Trauma">Acute Injury / Trauma</option>
+                  <option value="General Consultation">General Consultation</option>
+                </select>
+              </div>
+              <div className="form-group"><label>Describe Your Symptoms</label>
+                <textarea rows="3" value={form.symptoms} onChange={e=>up("symptoms",e.target.value)} placeholder="e.g. Right knee swelling after running for 2 weeks..."></textarea>
+              </div>
+              {err && <p style={{color:"var(--danger)",fontSize:13,marginTop:8}}>{err}</p>}
+              <button type="submit" className="book-btn" disabled={loading}>{loading ? "Sending..." : "Request Appointment"}</button>
+            </form>
+          </Anim>
+        </div>
+      </div>
+    </section>
+    {result && (
+      <div className="modal-overlay" onClick={()=>setResult(null)}>
+        <div className="modal" onClick={e=>e.stopPropagation()}>
+          <div className="success-icon">{I.check("#1b873f")}</div>
+          <h2>Appointment Requested!</h2>
+          <p>{result.message}</p>
+          <div className="booking-id">Booking ID: {result.bookingId}</div>
+          <br/>
+          <a href={result.calendarLink} target="_blank" rel="noopener noreferrer" className="cal-btn">
+            {I.calendarPlus()} Add to Google Calendar
+          </a>
+          <br/>
+          <button className="close-btn" onClick={()=>setResult(null)}>Close</button>
+        </div>
+      </div>
+    )}
+    </>
+  );
+}
+
+// =========== BLOGS ===========
+const BLOG_COLORS = ["#e0f2fe","#dcfce7","#fef3c7","#fce7f3","#ede9fe","#e0f2fe","#dcfce7"];
+const BLOG_ICONS = () => [I.bone(),I.run(),I.video(),I.therapy(),I.muscle(),I.spine(),I.ball()];
+
+function Blogs({ onRead }) {
+  const [articles, setArticles] = useState([]);
+  useEffect(() => { fetch(API+"/api/content").then(r=>r.json()).then(setArticles).catch(()=>{}); }, []);
+  const icons = BLOG_ICONS();
+  const list = articles.slice(0,6);
+  return (
+    <section className="section" id="blogs" style={{background:"#fff"}}>
+      <div className="section-inner">
+        <div className="section-title"><h2>Health Tips & Articles</h2><p>Expert-curated content to help you prevent injuries and recover faster.</p><div className="accent-line"></div></div>
+        <div className="blog-grid">
+          {list.map((a,i)=>(
+            <Anim key={a.id} delay={i*100}>
+              <div className="blog-card" style={{cursor:"pointer"}} onClick={()=>onRead(a.id)}>
+                <div className="blog-thumb" style={{background:BLOG_COLORS[i%BLOG_COLORS.length]}}>{icons[i%icons.length]}</div>
+                <div className="blog-body">
+                  <div className="blog-cat">{(a.category||"health").replace(/_/g," ")}</div>
+                  <h3>{a.title}</h3>
+                  <p>{a.summary}</p>
+                  <span className="blog-link">Read more {I.arrow()}</span>
+                </div>
+              </div>
+            </Anim>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== ARTICLE PAGE ===========
+function ArticlePage({ articleId, onBack }) {
+  const [article, setArticle] = useState(null);
+  const [allArticles, setAllArticles] = useState([]);
+  const icons = BLOG_ICONS();
+
+  useEffect(() => {
+    fetch(API+"/api/content/"+articleId).then(r=>r.json()).then(setArticle).catch(()=>{});
+    fetch(API+"/api/content").then(r=>r.json()).then(setAllArticles).catch(()=>{});
+    window.scrollTo(0,0);
+  }, [articleId]);
+
+  if (!article) return <div className="article-page"><div style={{maxWidth:1200,margin:"0 auto",padding:"0 40px"}}><p>Loading...</p></div></div>;
+
+  const colorIdx = allArticles.findIndex(a=>a.id===articleId);
+  const bgColor = BLOG_COLORS[(colorIdx>=0?colorIdx:0) % BLOG_COLORS.length];
+  const icon = icons[(colorIdx>=0?colorIdx:0) % icons.length];
+  const related = allArticles.filter(a=>a.id!==articleId).slice(0,5);
+  const catLabel = (article.category||"").replace(/_/g," ");
+  const readTime = Math.max(3, Math.ceil((article.body||"").split(/\s+/).length / 200));
+
+  return (
+    <div className="article-page">
+      <Navbar/>
+      <div style={{maxWidth:1200,margin:"0 auto",padding:"0 40px"}}>
+        <button className="article-back" onClick={onBack}>
+          <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Articles
+        </button>
+        <div className="article-hero" style={{background:bgColor}}>
+          {icon}
+        </div>
+      </div>
+      <div className="article-layout">
+        <div>
+          <div className="article-meta">
+            <span className="pill pill-cat">{catLabel}</span>
+            <span className="pill pill-region">{article.body_region}</span>
+            <span className="pill pill-type">{article.media_type}</span>
+            <span style={{color:"var(--muted)",fontSize:13}}>{readTime} min read</span>
+          </div>
+          <h1 className="article-title">{article.title}</h1>
+          <p className="article-summary">{article.summary}</p>
+          <div className="article-body" dangerouslySetInnerHTML={{__html:article.body}}></div>
+        </div>
+        <aside>
+          <div className="article-sidebar">
+            <div className="sidebar-card">
+              <h4>Related Articles</h4>
+              {related.map(r=>(
+                <a key={r.id} className="sidebar-link" onClick={()=>{setArticle(null);fetch(API+"/api/content/"+r.id).then(x=>x.json()).then(setArticle);window.scrollTo(0,0);}}>
+                  {r.title}
+                </a>
+              ))}
+            </div>
+            <div className="cta-card">
+              <h4>Need Expert Advice?</h4>
+              <p>Book a consultation with our orthopedic specialists.</p>
+              <a href="#" onClick={(e)=>{e.preventDefault();onBack();}}>Book Appointment</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <Footer/>
+    </div>
+  );
+}
+
+// =========== TESTIMONIALS ===========
+function Testimonials() {
+  const reviews = [
+    {text:"OrthoCare made scheduling my knee surgery follow-up incredibly easy. I got a calendar invite in seconds!",name:"Priya M.",role:"Patient",init:"P"},
+    {text:"The recovery articles helped me understand what to expect after my ACL repair. Very reassuring.",name:"James T.",role:"Patient",init:"J"},
+    {text:"As a runner, the injury prevention tips helped me fix my form before problems got serious.",name:"Ananya S.",role:"Patient",init:"A"},
+  ];
+  return (
+    <section className="section" id="testimonials">
+      <div className="section-inner">
+        <div className="section-title"><h2>What Our Patients Say</h2><p>Real stories from people who trust OrthoCare.</p><div className="accent-line"></div></div>
+        <div className="testimonials-grid">
+          {reviews.map((r,i)=>(
+            <Anim key={i} delay={i*120}>
+              <div className="test-card">
+                <div className="stars">{[0,1,2,3,4].map(j=><span key={j}>{I.star()}</span>)}</div>
+                <blockquote>"{r.text}"</blockquote>
+                <div className="test-author">
+                  <div className="test-avatar">{r.init}</div>
+                  <div><div className="test-name">{r.name}</div><div className="test-role">{r.role}</div></div>
+                </div>
+              </div>
+            </Anim>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== CONTACT ===========
+function Contact() {
+  const [sent, setSent] = useState(false);
+  function handle(e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    fetch(API+"/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.fromEntries(fd))});
+    setSent(true);
+    e.target.reset();
+    setTimeout(()=>setSent(false),5000);
+  }
+  return (
+    <section className="section" id="contact" style={{background:"#fff"}}>
+      <div className="section-inner">
+        <div className="section-title"><h2>Get in Touch</h2><p>Have questions? Our team will get back to you within 24 hours.</p><div className="accent-line"></div></div>
+        <div className="contact-grid">
+          <Anim>
+            <div className="contact-info">
+              <div className="contact-item"><div className="c-icon">{I.pin()}</div><div><h4>Visit Us</h4><p>123 Orthopedic Lane, Suite 200<br/>Medical District, NY 10001</p></div></div>
+              <div className="contact-item"><div className="c-icon">{I.phone()}</div><div><h4>Call Us</h4><p>+1 (555) 123-4567<br/>Mon - Fri, 8 AM - 6 PM</p></div></div>
+              <div className="contact-item"><div className="c-icon">{I.mailBox()}</div><div><h4>Email Us</h4><p>hello@orthocare.example<br/>support@orthocare.example</p></div></div>
+              <div className="contact-item"><div className="c-icon">{I.globe()}</div><div><h4>Working Hours</h4><p>Mon - Fri: 8 AM - 6 PM<br/>Saturday: 9 AM - 1 PM</p></div></div>
+            </div>
+          </Anim>
+          <Anim delay={150}>
+            <form className="contact-form" onSubmit={handle}>
+              <label>Full Name<input name="name" required placeholder="John Doe"/></label>
+              <label>Email<input name="email" type="email" required placeholder="john@example.com"/></label>
+              <label>Phone<input name="phone" type="tel" placeholder="+1 (555) 000-0000"/></label>
+              <label>Message<textarea name="message" rows="4" required placeholder="How can we help?"></textarea></label>
+              {sent
+                ? <div style={{marginTop:16,padding:12,background:"#dcfce7",borderRadius:10,color:"var(--ok)",fontSize:14,textAlign:"center"}}>Thank you! We'll get back to you shortly.</div>
+                : <button type="submit" className="contact-submit">Send Message</button>}
+            </form>
+          </Anim>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =========== FOOTER ===========
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-inner">
+        <div>
+          <div className="footer-logo"><img src="assets/logo.png" alt="OrthoCare"/><span>OrthoCare</span></div>
+          <p>Advanced orthopedic care platform combining seamless appointment scheduling with proactive injury prevention guidance.</p>
+        </div>
+        <div><h4>Quick Links</h4><a href="#home">Home</a><a href="#about">About Us</a><a href="#services">Services</a><a href="#blogs">Health Tips</a><a href="#contact">Contact</a></div>
+        <div><h4>Services</h4><a href="#services">Joint Replacement</a><a href="#services">Sports Medicine</a><a href="#services">Spine Care</a><a href="#services">Physical Therapy</a></div>
+        <div><h4>Contact</h4><a href="tel:+15551234567">+1 (555) 123-4567</a><a href="mailto:hello@orthocare.example">hello@orthocare.example</a><a href="#contact">123 Orthopedic Lane, NY</a></div>
+      </div>
+      <div className="footer-bottom">&copy; 2026 OrthoCare. All rights reserved. | HIPAA Compliant | Privacy Policy | Terms of Service</div>
+    </footer>
+  );
+}
+
+// =========== APP ===========
+function App() {
+  const [articleId, setArticleId] = useState(null);
+
+  if (articleId) {
+    return <ArticlePage articleId={articleId} onBack={()=>{setArticleId(null); setTimeout(()=>{const el=document.getElementById("blogs");if(el)el.scrollIntoView({behavior:"smooth"});},100);}} />;
+  }
+
+  return (
+    <>
+      <Navbar/>
+      <Hero/>
+      <Stats/>
+      <Services/>
+      <About/>
+      <BookingSection/>
+      <Blogs onRead={(id)=>setArticleId(id)}/>
+      <Testimonials/>
+      <Contact/>
+      <Footer/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
