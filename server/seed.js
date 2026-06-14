@@ -327,11 +327,20 @@ function seed() {
 <h2>The Big Picture</h2>
 <p>Full ACL recovery takes 9-12 months. Week 1 is just the start, but getting it right makes everything that follows easier. Follow your surgeon's protocol, attend all physical therapy sessions, and be patient with the process.</p>`],
     ];
+    const imageMap = {
+      "Dynamic Warm-Up Before Running": "assets/dynamic.png",
+      "Safe Barbell Squat Form": "assets/barbell_squat.png",
+      "Desk Posture Reset": "assets/desk_posture.png",
+      "Wrist Care for Typists": "assets/wrist_care.png",
+      "Fall Prevention for Seniors": "assets/fall_prevention.png",
+      "Bone Density Optimization": "assets/bone_density.png",
+    };
     for (const [cat, title, region, mtype, summary, body] of content) {
+      const img = imageMap[title] || "";
       db.prepare(
         `INSERT INTO precaution_content (id, category, title, body_region, media_type, summary, body, media_url)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-      ).run(uuid(), cat, title, region, mtype, summary, body, "https://media.orthocare.example/demo");
+      ).run(uuid(), cat, title, region, mtype, summary, body, img);
     }
 
     // Recovery plan

@@ -141,8 +141,10 @@
   .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
   .blog-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--line);transition:all .35s}
   .blog-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
-  .blog-thumb{height:180px;display:flex;align-items:center;justify-content:center;position:relative}
+  .blog-thumb{height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
   .blog-thumb svg{width:56px;height:56px;opacity:.7}
+  .blog-thumb img{width:100%;height:100%;object-fit:contain;padding:8px;transition:transform .4s ease}
+  .blog-card:hover .blog-thumb img{transform:scale(1.05)}
   .blog-body{padding:22px}
   .blog-cat{font-size:11px;text-transform:uppercase;font-weight:700;color:var(--brand);letter-spacing:1px;margin-bottom:8px}
   .blog-body h3{font-size:17px;margin-bottom:8px;line-height:1.4}
@@ -167,8 +169,9 @@
   .article-back{display:inline-flex;align-items:center;gap:6px;color:var(--brand2);font-size:14px;font-weight:600;text-decoration:none;margin-bottom:24px;padding:8px 16px;border-radius:8px;transition:background .2s;cursor:pointer;border:none;background:none}
   .article-back:hover{background:var(--brand-light)}
   .article-back svg{width:18px;height:18px}
-  .article-hero{border-radius:20px;height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:32px;position:relative;overflow:hidden}
+  .article-hero{border-radius:20px;height:450px;display:flex;align-items:center;justify-content:center;margin-bottom:32px;position:relative;overflow:hidden}
   .article-hero svg{width:80px;height:80px;opacity:.6}
+  .article-hero img{width:100%;height:100%;object-fit:contain;padding:16px}
   .article-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
   .article-meta .pill{font-size:12px;padding:4px 14px;border-radius:999px;font-weight:600}
   .pill-cat{background:var(--brand-light);color:var(--brand2)}
@@ -581,7 +584,9 @@ function Blogs({ onRead }) {
           {list.map((a,i)=>(
             <Anim key={a.id} delay={i*100}>
               <div className="blog-card" style={{cursor:"pointer"}} onClick={()=>onRead(a.id)}>
-                <div className="blog-thumb" style={{background:BLOG_COLORS[i%BLOG_COLORS.length]}}>{icons[i%icons.length]}</div>
+                <div className="blog-thumb" style={{background:BLOG_COLORS[i%BLOG_COLORS.length]}}>
+                  {a.media_url && a.media_url.startsWith("assets/") ? <img src={a.media_url} alt={a.title}/> : icons[i%icons.length]}
+                </div>
                 <div className="blog-body">
                   <div className="blog-cat">{(a.category||"health").replace(/_/g," ")}</div>
                   <h3>{a.title}</h3>
@@ -598,12 +603,13 @@ function Blogs({ onRead }) {
 }
 
 // =========== ARTICLE PAGE ===========
-function ArticlePage({ articleId, onBack }) {
+function ArticlePage({ articleId, onBack, onNavigate }) {
   const [article, setArticle] = useState(null);
   const [allArticles, setAllArticles] = useState([]);
   const icons = BLOG_ICONS();
 
   useEffect(() => {
+    setArticle(null);
     fetch(API+"/api/content/"+articleId).then(r=>r.json()).then(setArticle).catch(()=>{});
     fetch(API+"/api/content").then(r=>r.json()).then(setAllArticles).catch(()=>{});
     window.scrollTo(0,0);
@@ -627,7 +633,7 @@ function ArticlePage({ articleId, onBack }) {
           Back to Articles
         </button>
         <div className="article-hero" style={{background:bgColor}}>
-          {icon}
+          {article.media_url && article.media_url.startsWith("assets/") ? <img src={article.media_url} alt={article.title}/> : icon}
         </div>
       </div>
       <div className="article-layout">
@@ -647,7 +653,7 @@ function ArticlePage({ articleId, onBack }) {
             <div className="sidebar-card">
               <h4>Related Articles</h4>
               {related.map(r=>(
-                <a key={r.id} className="sidebar-link" onClick={()=>{setArticle(null);fetch(API+"/api/content/"+r.id).then(x=>x.json()).then(setArticle);window.scrollTo(0,0);}}>
+                <a key={r.id} className="sidebar-link" onClick={()=>onNavigate(r.id)}>
                   {r.title}
                 </a>
               ))}
@@ -759,7 +765,7 @@ function App() {
   const [articleId, setArticleId] = useState(null);
 
   if (articleId) {
-    return <ArticlePage articleId={articleId} onBack={()=>{setArticleId(null); setTimeout(()=>{const el=document.getElementById("blogs");if(el)el.scrollIntoView({behavior:"smooth"});},100);}} />;
+    return <ArticlePage articleId={articleId} onNavigate={(id)=>setArticleId(id)} onBack={()=>{setArticleId(null); setTimeout(()=>{const el=document.getElementById("blogs");if(el)el.scrollIntoView({behavior:"smooth"});},100);}} />;
   }
 
   return (
