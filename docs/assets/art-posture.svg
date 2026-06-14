@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fde68a"/></linearGradient>
+    <linearGradient id="body3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1f7a8c"/><stop offset="100%" stop-color="#15616d"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg3)"/>
+  <!-- Desk -->
+  <rect x="200" y="220" width="280" height="8" rx="3" fill="#15616d" opacity=".7"/>
+  <rect x="210" y="228" width="8" height="120" rx="2" fill="#15616d" opacity=".5"/>
+  <rect x="462" y="228" width="8" height="120" rx="2" fill="#15616d" opacity=".5"/>
+  <!-- Monitor -->
+  <rect x="300" y="140" width="120" height="80" rx="6" fill="#0d3b4f"/>
+  <rect x="306" y="146" width="108" height="68" rx="3" fill="#e0f2fe"/>
+  <rect x="348" y="220" width="16" height="10" fill="#0d3b4f"/>
+  <rect x="335" y="226" width="42" height="4" rx="2" fill="#0d3b4f"/>
+  <!-- Screen content lines -->
+  <rect x="316" y="160" width="60" height="3" rx="1" fill="#7dd3c0" opacity=".6"/>
+  <rect x="316" y="170" width="45" height="3" rx="1" fill="#7dd3c0" opacity=".4"/>
+  <rect x="316" y="180" width="55" height="3" rx="1" fill="#7dd3c0" opacity=".3"/>
+  <!-- Keyboard -->
+  <rect x="300" y="230" width="100" height="12" rx="3" fill="#5e7088" opacity=".6"/>
+  <!-- Chair -->
+  <path d="M160 180 Q160 340 180 345 L200 345 L200 380" stroke="#5e7088" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M160 345 L130 380" stroke="#5e7088" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M200 345 L230 380" stroke="#5e7088" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="130" cy="383" r="6" fill="#5e7088" opacity=".4"/>
+  <circle cx="230" cy="383" r="6" fill="#5e7088" opacity=".4"/>
+  <!-- Person sitting correctly -->
+  <g transform="translate(150,60)">
+    <circle cx="50" cy="55" r="18" fill="url(#body3)"/>
+    <path d="M50 73 L50 145" stroke="url(#body3)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M50 95 L95 130 L140 140" stroke="url(#body3)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M50 145 L80 145 L90 220 L80 280" stroke="url(#body3)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Spine alignment - correct -->
+    <path d="M50 55 L50 145" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 4" opacity=".6"/>
+  </g>
+  <!-- Eye level guide -->
+  <path d="M198 115 L300 155" stroke="#7dd3c0" stroke-width="1.5" stroke-dasharray="6 3" opacity=".5"/>
+  <!-- Checkmarks for correct posture -->
+  <g fill="#16a34a" opacity=".5">
+    <circle cx="130" cy="110" r="10"/><path d="M126 110 L129 113 L135 107" stroke="#fff" stroke-width="2" fill="none"/>
+    <circle cx="130" cy="200" r="10"/><path d="M126 200 L129 203 L135 197" stroke="#fff" stroke-width="2" fill="none"/>
+    <circle cx="240" cy="300" r="10"/><path d="M236 300 L239 303 L245 297" stroke="#fff" stroke-width="2" fill="none"/>
+  </g>
+</svg>
